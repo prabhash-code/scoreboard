@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import NewGame from './NewGame';
+import '../App.css'
 
 const Scoreboard = () => {
     const [matches, setMatches] = useState([]);
@@ -38,29 +39,29 @@ const Scoreboard = () => {
         });
 
         return sortedMatches.map((match, index) => (
-            <div key={match.id} className="summary" data-testid="summary-item">
+            <div key={match.id} className="summary-item" data-testid="summary-item">
                 {index + 1}. {match.homeTeam} {match.homeScore} - {match.awayScore} {match.awayTeam}
             </div>
         ));
     };
 
     return (
-        <div>
+        <div className="scoreboard">
             <h2>Ongoing Matches</h2>
             <div>
                 {matches.map((match) => (
-                    <div key={match.id}>
+                    <div key={match.id} className="match">
                         <button onClick={() => updateScore(match.id, match.homeScore + 1, match.awayScore)}>+1 Home</button>
                         <span>{match.homeTeam} {match.homeScore} - {match.awayScore} {match.awayTeam}</span>
                         <button onClick={() => updateScore(match.id, match.homeScore, match.awayScore + 1)}>+1 Away</button>
-                        <button onClick={() => finishGame(match.id)}>Finish Game</button>
+                        <button className="finish" onClick={() => finishGame(match.id)}>Finish Game</button>
                     </div>
                 ))}
             </div>
 
             <NewGame startNewGame={startNewGame} />
 
-            <div className="Summary">
+            <div className="summary">
                 <button onClick={() => setShowSummary(!showSummary)}>
                     {showSummary ? 'Hide Summary' : 'Show Summary'}
                 </button>

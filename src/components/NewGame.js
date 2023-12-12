@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../App.css'
 
 const NewGame = ({ startNewGame }) => {
     const [homeTeam, setHomeTeam] = useState('');
@@ -12,17 +13,19 @@ const NewGame = ({ startNewGame }) => {
     };
 
     return (
-        <form onSubmit={handleStartNewGame}>
-            <label>
-                Home Team:
-                <input type="text" value={homeTeam} onChange={(e) => setHomeTeam(e.target.value)} />
-            </label>
-            <label>
-                Away Team:
-                <input type="text" value={awayTeam} onChange={(e) => setAwayTeam(e.target.value)} />
-            </label>
-            <button type="submit">Start New Game</button>
-        </form>
+        <div className="new-game" >
+            <form onSubmit={handleStartNewGame}>
+                <label>
+                    Home Team:
+                    <input type="text" value={homeTeam} onChange={(e) => setHomeTeam(e.target.value)} />
+                </label>
+                <label>
+                    Away Team:
+                    <input type="text" value={awayTeam} onChange={(e) => setAwayTeam(e.target.value)} />
+                </label>
+                <button type="submit">Start New Game</button>
+            </form>
+        </div>
     );
 };
 

@@ -2,37 +2,86 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.scoreboard {
+  margin-top: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.match {
+  border: 1px solid #ddd;
+  padding: 10px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  width: 25%;
+  margin: 10px auto;
+}
+
+.match button {
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.match button.finish {
+  background-color: #e74c3c;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.match button.finish:hover {
+  background-color: #c0392b;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.new-game {
+  margin-top: 20px;
+}
+
+.new-game form {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.new-game label {
+  margin-bottom: 10px;
+}
+
+.new-game input {
+  padding: 8px;
+  margin: 5px 10px;
+}
+
+.new-game button {
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.new-game button:hover {
+  background-color: #45a049;
+}
+
+.summary {
+  margin-top: 20px;
+}
+
+.summary button {
+  margin-top: 10px;
+  background-color: #3498db;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.summary button:hover {
+  background-color: #2980b9;
+}
+
+.summary-item {
+  margin-bottom: 10px;
 }
