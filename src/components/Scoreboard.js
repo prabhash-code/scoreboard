@@ -3,6 +3,7 @@ import NewGame from './NewGame';
 
 const Scoreboard = () => {
     const [matches, setMatches] = useState([]);
+    const [showSummary, setShowSummary] = useState(false);
 
     const startNewGame = (homeTeam, awayTeam) => {
         const newMatch = {
@@ -28,6 +29,21 @@ const Scoreboard = () => {
         setMatches(matches.filter((match) => match.id !== matchId));
     };
 
+    const calculateTotalScore = (match) => match.homeScore + match.awayScore;
+
+    const getSummary = () => {
+        const sortedMatches = [...matches].sort((a, b) => {
+            const totalScoreDiff = calculateTotalScore(b) - calculateTotalScore(a);
+            return totalScoreDiff !== 0 ? totalScoreDiff : b.id - a.id;
+        });
+
+        return sortedMatches.map((match, index) => (
+            <div key={match.id} className="summary" data-testid="summary-item">
+                {index + 1}. {match.homeTeam} {match.homeScore} - {match.awayScore} {match.awayTeam}
+            </div>
+        ));
+    };
+
     return (
         <div>
             <h2>Ongoing Matches</h2>
@@ -43,6 +59,18 @@ const Scoreboard = () => {
             </div>
 
             <NewGame startNewGame={startNewGame} />
+
+            <div className="Summary">
+                <button onClick={() => setShowSummary(!showSummary)}>
+                    {showSummary ? 'Hide Summary' : 'Show Summary'}
+                </button>
+                {showSummary && (
+                    <>
+                        <h2>Summary</h2>
+                        {getSummary()}
+                    </>
+                )}
+            </div>
         </div>
     );
 };
