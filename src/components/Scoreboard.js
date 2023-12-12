@@ -24,6 +24,10 @@ const Scoreboard = () => {
         ));
     };
 
+    const finishGame = (matchId) => {
+        setMatches(matches.filter((match) => match.id !== matchId));
+    };
+
     return (
         <div>
             <h2>Ongoing Matches</h2>
@@ -33,6 +37,7 @@ const Scoreboard = () => {
                         <button onClick={() => updateScore(match.id, match.homeScore + 1, match.awayScore)}>+1 Home</button>
                         <span>{match.homeTeam} {match.homeScore} - {match.awayScore} {match.awayTeam}</span>
                         <button onClick={() => updateScore(match.id, match.homeScore, match.awayScore + 1)}>+1 Away</button>
+                        <button onClick={() => finishGame(match.id)}>Finish Game</button>
                     </div>
                 ))}
             </div>

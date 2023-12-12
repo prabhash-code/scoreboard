@@ -29,37 +29,55 @@ test('starts a new game', () => {
 });
 
 test('updates home score', () => {
-  render(<Scoreboard />);
-  const homeTeamInput = screen.getByLabelText(/Home Team:/i);
-  const awayTeamInput = screen.getByLabelText(/Away Team:/i);
-  const startButton = screen.getByText(/Start New Game/i);
+    render(<Scoreboard />);
+    const homeTeamInput = screen.getByLabelText(/Home Team:/i);
+    const awayTeamInput = screen.getByLabelText(/Away Team:/i);
+    const startButton = screen.getByText(/Start New Game/i);
 
-  fireEvent.change(homeTeamInput, { target: { value: 'Team A' } });
-  fireEvent.change(awayTeamInput, { target: { value: 'Team B' } });
-  fireEvent.click(startButton);
+    fireEvent.change(homeTeamInput, { target: { value: 'Team A' } });
+    fireEvent.change(awayTeamInput, { target: { value: 'Team B' } });
+    fireEvent.click(startButton);
 
-  const homeScoreButton = screen.getByText('+1 Home');
+    const homeScoreButton = screen.getByText('+1 Home');
 
-  fireEvent.click(homeScoreButton);
+    fireEvent.click(homeScoreButton);
 
-  const updatedMatchElement = screen.getByText(/Team A 1 - 0 Team B/i);
-  expect(updatedMatchElement).toBeInTheDocument();
+    const updatedMatchElement = screen.getByText(/Team A 1 - 0 Team B/i);
+    expect(updatedMatchElement).toBeInTheDocument();
 });
 
 test('updates away score', () => {
-  render(<Scoreboard />);
-  const homeTeamInput = screen.getByLabelText(/Home Team:/i);
-  const awayTeamInput = screen.getByLabelText(/Away Team:/i);
-  const startButton = screen.getByText(/Start New Game/i);
+    render(<Scoreboard />);
+    const homeTeamInput = screen.getByLabelText(/Home Team:/i);
+    const awayTeamInput = screen.getByLabelText(/Away Team:/i);
+    const startButton = screen.getByText(/Start New Game/i);
 
-  fireEvent.change(homeTeamInput, { target: { value: 'Team A' } });
-  fireEvent.change(awayTeamInput, { target: { value: 'Team B' } });
-  fireEvent.click(startButton);
-  
-  const awayScoreButton = screen.getByText('+1 Away');
+    fireEvent.change(homeTeamInput, { target: { value: 'Team A' } });
+    fireEvent.change(awayTeamInput, { target: { value: 'Team B' } });
+    fireEvent.click(startButton);
 
-  fireEvent.click(awayScoreButton);
+    const awayScoreButton = screen.getByText('+1 Away');
 
-  const updatedMatchElement = screen.getByText(/Team A 0 - 1 Team B/i);
-  expect(updatedMatchElement).toBeInTheDocument();
+    fireEvent.click(awayScoreButton);
+
+    const updatedMatchElement = screen.getByText(/Team A 0 - 1 Team B/i);
+    expect(updatedMatchElement).toBeInTheDocument();
+});
+
+test('finishes a game', () => {
+    render(<Scoreboard />);
+    const homeTeamInput = screen.getByLabelText(/Home Team:/i);
+    const awayTeamInput = screen.getByLabelText(/Away Team:/i);
+    const startButton = screen.getByText(/Start New Game/i);
+
+    fireEvent.change(homeTeamInput, { target: { value: 'Team A' } });
+    fireEvent.change(awayTeamInput, { target: { value: 'Team B' } });
+    fireEvent.click(startButton);
+    
+    const finishGameButton = screen.getByText(/Finish Game/i);
+
+    fireEvent.click(finishGameButton);
+
+    const finishedMatchElement = screen.queryByText(/Team A 0 - 0 Team B/i);
+    expect(finishedMatchElement).toBeNull();
 });
