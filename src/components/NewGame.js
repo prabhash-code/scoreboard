@@ -7,6 +7,12 @@ const NewGame = ({ startNewGame }) => {
 
     const handleStartNewGame = (e) => {
         e.preventDefault();
+
+        if (!homeTeam.trim() || !awayTeam.trim()) {
+            alert('Please enter values for both Home Team and Away Team.');
+            return;
+        }
+
         startNewGame(homeTeam, awayTeam);
         setHomeTeam('');
         setAwayTeam('');
