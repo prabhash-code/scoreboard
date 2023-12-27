@@ -9,10 +9,7 @@
 .match {
   border: 1px solid #ddd;
   padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 35%;
+  width: 40%;
   margin: 10px auto;
 }
 
@@ -29,6 +26,38 @@
 
 .match button.finish:hover {
   background-color: #c0392b;
+}
+
+.score-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-section {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.card-section label,
+.card-section select,
+.card-section button {
+  margin-right: 10px;
+}
+
+#playerName {
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#card {
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .new-game {
