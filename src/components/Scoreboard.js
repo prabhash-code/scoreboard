@@ -5,6 +5,7 @@ import '../App.css'
 const Scoreboard = () => {
     const [matches, setMatches] = useState([]);
     const [showSummary, setShowSummary] = useState(false);
+    const [currentPlayer, setCurrentPlayer] = useState('');
 
     const startNewGame = (homeTeam, awayTeam) => {
         const newMatch = {
@@ -12,7 +13,7 @@ const Scoreboard = () => {
             awayTeam,
             homeScore: 0,
             awayScore: 0,
-            goalTimes: [],
+            goalDetails: [],
             id: Date.now(),
         };
 
@@ -20,6 +21,11 @@ const Scoreboard = () => {
     };
 
     const updateScore = (matchId, homeScore, awayScore) => {
+        if (!currentPlayer.trim()) {
+            alert('Please enter the player name that scores the goal.');
+            return;
+        }
+
         const timeOfGoal = Date.now();
 
         setMatches((prevMatches) =>
@@ -29,11 +35,16 @@ const Scoreboard = () => {
                         ...match,
                         homeScore,
                         awayScore,
-                        goalTimes: [...match.goalTimes, getGoalTime(timeOfGoal, match.id)],
+                        goalDetails: [
+                            ...match.goalDetails,
+                            { time: getGoalTime(timeOfGoal, match.id), player: currentPlayer },
+                        ],
                     }
                     : match
             )
         );
+        
+        setCurrentPlayer('')
     };
 
     const getGoalTime = (goalTime, matchStartTime) => {
@@ -49,16 +60,34 @@ const Scoreboard = () => {
 
     const getSummary = () => {
         const sortedMatches = [...matches].sort((a, b) => {
-          const totalScoreDiff = calculateTotalScore(b) - calculateTotalScore(a);
-          return totalScoreDiff !== 0 ? totalScoreDiff : b.id - a.id;
+            const totalScoreDiff = calculateTotalScore(b) - calculateTotalScore(a);
+            return totalScoreDiff !== 0 ? totalScoreDiff : b.id - a.id;
         });
-      
+
         return sortedMatches.map((match, index) => (
             <div key={match.id} className="summary-item" data-testid="summary-item">
-              {index + 1}. {match.homeTeam} {match.homeScore} - {match.awayScore} {match.awayTeam} {match.goalTimes.length > 0 && match.goalTimes.join(" ")}
-          </div>
+                {index + 1}. {match.homeTeam} {match.homeScore} - {match.awayScore} {match.awayTeam}
+                {match.goalDetails.length > 0 && (
+                    <span>
+                        {match.goalDetails.map((goal, goalIndex) => (
+                            <span key={`${goal.time}-${goal.player}`}>
+                                {goalIndex > 0 ? ' ' : ''} {/* Add space between multiple goals */}
+                                {goal.time} {getInitials(goal.player)}
+                            </span>
+                        ))}
+                    </span>
+                )}
+            </div>
         ));
-      };
+    };
+
+    const getInitials = (playerName) => {
+        const initials = playerName
+            .split(' ')
+            .map((word) => word.charAt(0).toUpperCase())
+            .join('.');
+        return `(${initials})`;
+    };
 
     return (
         <div className="scoreboard">
@@ -66,6 +95,13 @@ const Scoreboard = () => {
             <div>
                 {matches.map((match) => (
                     <div key={match.id} className="match">
+                        <label htmlFor="playerName">Player Name:</label>
+                        <input
+                            type="text"
+                            id="playerName"
+                            value={currentPlayer}
+                            onChange={(e) => setCurrentPlayer(e.target.value)}
+                        />
                         <button onClick={() => updateScore(match.id, match.homeScore + 1, match.awayScore)}>+1 Home</button>
                         <span>{match.homeTeam} {match.homeScore} - {match.awayScore} {match.awayTeam}</span>
                         <button onClick={() => updateScore(match.id, match.homeScore, match.awayScore + 1)}>+1 Away</button>
