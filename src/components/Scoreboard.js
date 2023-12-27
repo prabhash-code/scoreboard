@@ -12,6 +12,7 @@ const Scoreboard = () => {
             awayTeam,
             homeScore: 0,
             awayScore: 0,
+            goalTimes: [],
             id: Date.now(),
         };
 
@@ -19,11 +20,25 @@ const Scoreboard = () => {
     };
 
     const updateScore = (matchId, homeScore, awayScore) => {
-        setMatches(matches.map((match) =>
-            match.id === matchId
-                ? { ...match, homeScore, awayScore }
-                : match
-        ));
+        const timeOfGoal = Date.now();
+
+        setMatches((prevMatches) =>
+            prevMatches.map((match) =>
+                match.id === matchId
+                    ? {
+                        ...match,
+                        homeScore,
+                        awayScore,
+                        goalTimes: [...match.goalTimes, getGoalTime(timeOfGoal, match.id)],
+                    }
+                    : match
+            )
+        );
+    };
+
+    const getGoalTime = (goalTime, matchStartTime) => {
+        const timeDifference = Math.floor((goalTime - matchStartTime) / (60000));
+        return `${timeDifference}"`;
     };
 
     const finishGame = (matchId) => {
@@ -34,16 +49,16 @@ const Scoreboard = () => {
 
     const getSummary = () => {
         const sortedMatches = [...matches].sort((a, b) => {
-            const totalScoreDiff = calculateTotalScore(b) - calculateTotalScore(a);
-            return totalScoreDiff !== 0 ? totalScoreDiff : b.id - a.id;
+          const totalScoreDiff = calculateTotalScore(b) - calculateTotalScore(a);
+          return totalScoreDiff !== 0 ? totalScoreDiff : b.id - a.id;
         });
-
+      
         return sortedMatches.map((match, index) => (
             <div key={match.id} className="summary-item" data-testid="summary-item">
-                {index + 1}. {match.homeTeam} {match.homeScore} - {match.awayScore} {match.awayTeam}
-            </div>
+              {index + 1}. {match.homeTeam} {match.homeScore} - {match.awayScore} {match.awayTeam} {match.goalTimes.length > 0 && match.goalTimes.join(" ")}
+          </div>
         ));
-    };
+      };
 
     return (
         <div className="scoreboard">
